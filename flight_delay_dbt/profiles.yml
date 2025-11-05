@@ -1,0 +1,39 @@
+name: flight_delay_dbt
+version: 1.0.0
+config-version: 2
+profile: flight_delay_dbt
+
+model-paths: [models]
+analysis-paths: [analyses]
+test-paths: [tests]
+seed-paths: [seeds]
+macro-paths: [macros]
+snapshot-paths: [snapshots]
+
+models:
+  flight_delay_dbt:
+    # project-wide defaults
+    +materialized: view
+    +persist_docs:
+      relation: true
+      columns: true
+
+    bronze:
+      +schema: bronze
+      +tags: [bronze]
+
+    silver:
+      +schema: silver
+      +tags: [silver]
+
+    gold:
+      +schema: gold
+      +tags: [gold]
+      # Gold often serves BI/reporting—tables are usually better than views here
+      +materialized: table
+
+      # optional subfolders for organization
+      reports:
+        +tags: [report]
+      marts:
+        +tags: [mart]
